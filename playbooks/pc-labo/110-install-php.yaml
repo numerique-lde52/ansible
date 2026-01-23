@@ -13,7 +13,6 @@
 
   become: yes
 
-
   vars:
     php_version: "8.1"
 
@@ -31,42 +30,31 @@
 
     - name: required package and php {{ php_version }}
       apt:
-        name: 
-            - software-properties-common
-            - libapache2-mod-fcgid
-            - php{{ php_version }}
-            - php8.1-curl
-            - sudo apt-get install   
-            - php8.1-fpm 
-            - php8.1-gd 
-            - php8.1-mbstring 
-            - php8.1-mysql 
-            - php8.1-zip 
-            - libapache2-mod-php8.1
+        name:
+          - software-properties-common
+          - libapache2-mod-fcgid
+          - php{{ php_version }}
+          - php{{ php_version }}-curl
+          - php{{ php_version }}-fpm 
+          - php{{ php_version }}-gd 
+          - php{{ php_version }}-mbstring 
+          - php{{ php_version }}-mysql 
+          - php{{ php_version }}-zip 
+          - libapache2-mod-php{{ php_version }}
 
         state: present    
 
 
+    - name: Enable service php{{ php_version }}-fpm
+      service:
+        name: php{{ php_version }}-fpm
+        enabled: yes
 
-sudo systemctl start php8.1-fpm
-
-sudo systemctl status php8.1-fpm
-
-sudo a2enmod actions fcgid alias proxy_fcgi
-
-sudo systemctl restart apache2
-    - name: Install apache2
-      apt:
-        name: apache2
-        update_cache: yes
-        state: present
-
-    - name: enable mod_rewrite
-      apache2_module:
-        name: rewrite
-        state: present
+    - name: Enable fcgi
+      command: a2enmod actions fcgid alias proxy_fcgi
       notify:
         - restart apache2
+
 
   handlers:
     - name: restart apache2

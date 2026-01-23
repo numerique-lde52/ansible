@@ -36,3 +36,28 @@
     #   register: command_output
 
     # - debug: msg="{{ command_output.stdout_lines }}"
+
+
+    # - name: checking service status
+    #   command: systemctl status "{{ item }}"
+    #   with_items:
+    #     - apache2
+    #     - sshd
+    #   register: result
+    #   ignore_errors: yes
+
+    # - name: showing report
+    #   debug:
+    #     var: result    
+
+
+    - name: Get Service Status
+      systemd:
+        name: "apache2"
+      register: pg_service_status
+
+
+
+
+    - debug:
+        var: pg_service_status #.status.ActiveState

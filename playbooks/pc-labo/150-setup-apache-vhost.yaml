@@ -14,16 +14,17 @@
   become: true
 
   vars:
-    website: "mywebsite.local"
-    add_www: false
+    website: "site.local"
     disable_default_site: true
     vhost_template: "virtual-host-apache-config-file.j2"
+    php_version: "8.1"
+
 
   tasks:
     - debug: msg="website = {{ website }}"
     - debug: msg="template = {{ vhost_template }}"
-    - debug: msg="add_www = {{ add_www }}"
     - debug: msg="disable_default_site = {{ disable_default_site }}"
+    - debug: msg="php_version = {{ php_version }}"
 
     - name: create folder for {{ website }} files
       file: 

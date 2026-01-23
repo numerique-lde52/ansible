@@ -28,6 +28,12 @@
       notify:
         - restart apache2
 
+    - name: Enable service apache
+      service:
+        name: apache2
+        enabled: yes
+
+
   handlers:
     - name: restart apache2
       service:

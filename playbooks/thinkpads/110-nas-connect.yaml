@@ -1,0 +1,31 @@
+---
+#
+# Connect NAS
+#
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/thinkpads/110-nas-connect.yaml
+#
+- name: Connect NAS
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: thinkpads
+
+  become: yes
+
+  tasks:
+
+
+############## NOT WORKING
+
+    - name: Mount SMB volume
+
+      ansible.posix.mount:
+        src: //192.168.8.200
+        path: /mnt/commun
+        opts: 'rw,vers=3,file_mode=0600,dir_mode=0700,dom=WORKGROUP,username=nas-ligue\commun,password=chaumont,52'
+        fstype: cifs
+        state: present
+
+

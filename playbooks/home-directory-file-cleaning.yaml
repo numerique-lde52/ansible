@@ -1,0 +1,79 @@
+---
+#
+# Testing creation and deletion of files and folders
+#
+# invoque with :
+# ansible-playbook playbooks/home-directory-file-cleaning.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+- name: Testing creation and deletion of files and folders
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: stage
+
+# CHANGE THIS IF NECESSARY
+#              vvvvvvvv  
+  remote_user: utilisateur
+
+  vars:
+    managed_folders:
+      - "Bureau"
+      - "Documents"
+      - "Images"
+      - "Modèles"
+      - "Musique"
+      - "Public"
+      - "Téléchargements"
+      - "Vidéos"
+
+    # dir_name: "test2"
+    # file_name: "test2.txt"
+
+  tasks:
+
+###############  FOR TESTING
+    # - name: Creating directories
+    #   file:
+    #     path: "~/{{ item }}/{{ dir_name }}/"
+    #     state: directory
+    #   loop: '{{ managed_folders }}'
+    #   register: created_folders
+
+    # - debug:
+    #     var: created_folders
+
+    # - name: creates files
+    #   copy:
+    #     dest: "~/{{ item }}/{{ dir_name }}/{{ file_name }}"
+    #     content: |
+    #       test
+    #   loop: '{{ managed_folders }}'
+    #   register: created_files
+
+    # - debug:
+    #     var: created_files
+############### END FOR TESTING
+
+    - name: delete all managed folders
+      file: 
+        path: ~/{{ item }}/
+        state: absent
+        # recurse: true
+      loop: "{{ managed_folders }}"
+
+
+
+    - name: recreate managed folders
+      file:
+        path: ~/{{ item }}/
+        state: directory
+        mode: '0755'
+        owner: '{{ ansible_user_id }}'
+        group: '{{ ansible_user_id }}'
+      loop: "{{ managed_folders }}"
+      register: contents
+      
+    - debug:
+        var: contents

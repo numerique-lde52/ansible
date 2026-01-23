@@ -1,0 +1,99 @@
+---
+#
+# Install somes programs
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/031-programs_base-LMDE.yaml
+#
+# source : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+- name: Install packages
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: yes
+
+  tasks:
+    - name: Install packages
+
+      apt:
+        name: 
+            - audacity # montage audio
+            - backintime-qt # sauvegarde
+            - blender # montage video
+            - chromium
+            - curl 
+            - dconf-editor # GUI for GNOME desktop environment configuration
+            - gimp # retouche d'image
+            - git-gui # with git
+            - gnome-software-plugin-flatpak # bibliothèque logicielle Gnome
+            - gnome-tweaks # configuration gnome
+            - inkscape # dessin vectoriel
+            - hyphen-fr # disctionnaire français
+            - hunspell-fr # disctionnaire français
+            - libreoffice
+            - libreoffice-l10n-fr
+            - meld # comparateur de fichiers / dossiers
+            - mint-meta-codecs # additional codecs
+            - obs-studio # montage / regie video
+            - openshot-qt # montage video
+            - python3-psutil # needed to manage dconf remotelly
+            - python3-passlib # new crypto lib
+            - scribus # pao
+            - synaptic # gestionnaire de paquets
+            # - system-config-printer # configuration imprimantes supplémentaire
+            - timeshift # snapshot system
+            - vlc
+            - winff # transcodeur vidéo
+
+            # alternative to ubuntu-restricted-extras
+            - libavcodec-extra
+            - unrar
+            - gstreamer1.0-libav
+            - gstreamer1.0-plugins-ugly
+            - gstreamer1.0-vaapi
+
+        state: present
+
+
+    - name: prepare eula for ttf-mscorefonts-installer
+      debconf:
+        name: ttf-mscorefonts-installer
+        question: msttcorefonts/accepted-mscorefonts-eula
+        vtype: boolean
+        value: true
+
+    - name: Install ttf-mscorefonts-installer
+      apt:
+        name:
+          - ttf-mscorefonts-installer
+        
+        state: present
+
+
+
+    - name: get current user's home path
+      shell: pwd
+      register: base_path
+
+    - name: Recursively remove old inkscape config
+      file:
+        path: "{{ base_path.stdout }}/.config/inkscape/"
+        state: absent
+    
+    - name: Copy inkscape config
+      copy:
+        # with trailing slash copy only files recursiv
+        # eg : /home/user/files/
+        # without trailing slash, will copy folder and his content
+        # eg : /home/user/files
+
+        src: "~/.ansible/files/config_inkscape/inkscape"
+        dest: "{{ base_path.stdout }}/.config/"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: u=rwx,g=rx,o=rx
+
+

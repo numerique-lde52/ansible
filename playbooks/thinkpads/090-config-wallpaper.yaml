@@ -1,0 +1,42 @@
+---
+#
+# Configure a specific user's wallpaper
+#
+# invoque with :
+# ansible-playbook playbooks/thinkpads/090-config-wallpaper.yaml
+#
+# Desktop changes can be observed in dconf database using "dconf watch /"
+#
+
+- name: Configure user wallpaper
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: thinkpads
+
+# CHANGE THIS IF NECESSARY
+  remote_user: "{{ target_user }}"
+
+  tasks:
+
+    - name: Ansible copy files from a directory to remote host
+      copy:
+        # with trailing slash copy only files recursiv
+        src: "~/.ansible/files/install/logo-ligue-lettrage-gris.png"
+        dest: ~/Images/
+
+    - name: set wallpaper
+      dconf:
+        key: /org/gnome/desktop/background/picture-uri
+        value: "'file:///home/{{ target_user }}/Images/logo-ligue-lettrage-gris.png'"
+  
+    - name: set desktop color to blue
+      dconf:
+        key: /org/gnome/desktop/background/primary-color
+        value: "'#1c71d8'"
+  
+    - name: set wallpaper size 
+      dconf:
+        key: /org/gnome/desktop/background/picture-options
+        value: "'scaled'"
+ 

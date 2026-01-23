@@ -1,0 +1,69 @@
+---
+#
+# Install ruskdesk 
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/070-programs_rustdesk.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+
+- name: Install ruskdesk
+  
+  hosts: hpg3
+  
+  become: yes
+
+  vars:
+    target_file_path: "/home/{{ target_user }}/Téléchargements/"
+
+  tasks:
+
+    - name: Uninstall previous versions
+      apt:
+        name: rustdesk
+        state: absent
+
+    - name: check latest rustdesk
+      uri:
+        url: https://api.github.com/repos/rustdesk/rustdesk/releases/latest
+        return_content: true
+
+      register: rustdesk_latest
+
+    - name: "Getting rustdesk {{ rustdesk_latest.json.tag_name }} infos"
+      loop: "{{ rustdesk_latest.json.assets }}"
+      when: "'-x86_64.deb' in item.name"
+      set_fact:
+        rustdesk_latest_deb_local_path: "{{target_file_path + item.name }}"
+        rustdesk_latest_deb_url: "{{ item.browser_download_url }}"
+
+    - name: "print file local path"
+      debug:
+        var: rustdesk_latest_deb_local_path
+
+    - name: "print file url"
+      debug:
+        var: rustdesk_latest_deb_url
+
+    - name : "Download deb"
+      get_url:
+        url: "{{ rustdesk_latest_deb_url }}"
+        dest: "{{ target_file_path }}"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+      
+    - name: Install rustdesk .deb package
+      apt:
+        deb: "{{ rustdesk_latest_deb_local_path }}"
+        state: present
+
+    - name: remove deb archive
+      file:
+        path: "{{ rustdesk_latest_deb_local_path }}"
+        state: absent
+
+    - name : remove rustdesk service autostart
+      file: 
+        path: /etc/systemd/system/multi-user.target.wants/rustdesk.service
+        state: absent

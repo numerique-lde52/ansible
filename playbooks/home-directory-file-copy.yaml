@@ -1,0 +1,40 @@
+---
+#
+# Copy files to remote pc
+#
+# invoque with :
+# ansible-playbook playbooks/home-directory-file-copy.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+- name: Copy files to remote pc
+  hosts: hpg3
+  remote_user: geek
+  gather_facts: false
+
+  tasks:
+
+    - name: Copy files
+      copy:
+        # with trailing slash copy only files recursiv
+        # eg : /home/user/files/
+        # without trailing slash, will copy folder and his content
+        # eg : /home/user/files
+        src: /home/daja/.ansible/files/ndc-2025
+
+        #src: "~/.ansible/files/geeks/Documentation-stage-hiver-2025.html"
+        dest: ~/Bureau/
+
+
+    # - name: Copy files
+    #   copy:
+    #     # with trailing slash copy only files recursiv
+    #     # eg : /home/user/files/
+    #     # without trailing slash, will copy folder and his content
+    #     # eg : /home/user/files
+
+    #     src: "~/.ansible/files/conseiller_num/lecon-02/"
+    #     dest: ~/Bureau/
+
+
+

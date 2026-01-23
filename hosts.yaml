@@ -1,0 +1,158 @@
+---
+# ligue52 inventory file
+#
+# ref : https://docs.ansible.com/ansible-core/2.13/getting_started/get_started_inventory.html
+#
+# this inventory works on tplink router "routeur qui marche bien bien" network ONLY !!!!
+#
+#################################################
+###    ROUTEUR CRIB
+#################################################
+hpg3:
+  hosts:
+    ligue01:
+      ansible_host: 192.168.1.101
+
+    ligue02:
+      ansible_host: 192.168.1.102
+
+    ligue03:
+      ansible_host: 192.168.1.103
+
+    ligue04:
+      ansible_host: 192.168.1.104
+
+    ligue05:
+      ansible_host: 192.168.1.105
+
+    # ligue06:
+    #   ansible_host: 192.168.1.106
+
+    # ligue07:
+    #   ansible_host: 192.168.1.107
+
+    # ligue08:
+    #   ansible_host: 192.168.1.108
+
+    ligue09:
+      ansible_host: 192.168.1.109
+
+    # ligue10:
+    #   ansible_host: 192.168.1.110
+
+    # ligue11:
+    #   ansible_host: 192.168.1.111
+
+    # ligue12:
+    #   ansible_host: 192.168.1.112
+
+    # ligue13:
+    #   ansible_host: 192.168.1.113
+
+    # ligue14:
+    #   ansible_host: 192.168.1.114
+
+    # ligue15:
+    #   ansible_host: 192.168.1.115
+
+    # ligue16:
+    #   ansible_host: 192.168.1.116
+
+    # ligue17:
+    #   ansible_host: 192.168.1.117
+
+    ligue18:
+      ansible_host: 192.168.1.118
+
+    ligue19:
+      ansible_host: 192.168.1.119
+
+    # ligue20:
+    #   ansible_host: 192.168.1.120
+
+
+  vars:
+    target_user: utilisateur
+
+thinkpads:
+  hosts:
+    thinkpad03:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.203
+
+
+  vars:
+    target_user: utilisateur  
+#################################################
+###    ROUTEUR QUI MARCHE BIEN
+#################################################
+# hpg3:
+#   hosts:
+    # ligue01:
+    #   ansible_host: 192.168.15.101
+
+    # ligue02:
+    #   ansible_host: 192.168.15.102
+
+    # ligue03:
+    #   ansible_host: 192.168.15.103
+
+    # ligue04:
+    #   ansible_host: 192.168.15.104
+
+    # ligue05:
+    #   ansible_host: 192.168.15.105
+
+    # ligue06:
+    #   ansible_host: 192.168.15.106
+
+    # ligue07:
+    #   ansible_host: 192.168.15.107
+
+    # ligue08:
+    #   ansible_host: 192.168.15.108
+
+    # ligue09:
+    #   ansible_host: 192.168.15.109
+
+    # ligue10:
+    #   ansible_host: 192.168.15.110
+
+    # ligue11:
+    #   ansible_host: 192.168.15.111
+
+    # ligue12:
+    #   ansible_host: 192.168.15.112
+
+    # ligue13:
+    #   ansible_host: 192.168.15.113
+
+    # ligue14:
+    #   ansible_host: 192.168.15.114
+
+    # ligue15:
+    #   ansible_host: 192.168.15.115
+
+    # ligue16:
+    #   ansible_host: 192.168.15.116
+
+    # ligue17:
+    #   ansible_host: 192.168.15.117
+
+    # ligue18:
+    #   ansible_host: 192.168.15.118
+
+    # ligue19:
+    #   ansible_host: 192.168.15.119
+
+    # ligue20:
+    #   ansible_host: 192.168.15.120
+
+    # ideapad:
+    #   ansible_host: 192.168.1.58
+
+
+  # vars:
+  #   target_user: geek
+
+

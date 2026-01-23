@@ -1,0 +1,48 @@
+---
+#
+# Install somes programs
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/033-config-inkscape-LMDE.yaml
+#
+# source : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+- name: Install packages
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: yes
+
+  tasks:
+    - name: Verify inkscape install
+
+      apt:
+        name: 
+            - inkscape
+        state: present
+
+    - name: get current user's home path
+      shell: pwd
+      register: base_path
+
+    - name: Recursively remove old inkscape config
+      file:
+        path: "{{ base_path.stdout }}/.config/inkscape/"
+        state: absent
+    
+    - name: Copy inkscape config
+      copy:
+        # with trailing slash copy only files recursiv
+        # eg : /home/user/files/
+        # without trailing slash, will copy folder and his content
+        # eg : /home/user/files
+
+        src: "~/.ansible/files/config_inkscape/inkscape"
+        dest: "{{ base_path.stdout }}/.config/"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: u=rwx,g=rx,o=rx
+
+

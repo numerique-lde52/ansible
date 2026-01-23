@@ -1,0 +1,82 @@
+---
+#
+# Install somes programs
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/040-programs_optional-LMDE.yaml
+#
+# source : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+- name: Install optional programs
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: yes
+
+  tasks:
+
+    # ref : https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/deb822_repository_module.html
+    # - name: Add Sublime text repo using key from URL
+    #   deb822_repository:
+    #     name: add Sublime text
+    #     types: deb
+    #     uris: https://download.sublimetext.com/
+    #     suites: stable
+    #     components: stable
+    #     signed_by: https://download.sublimetext.com/sublimehq-pub.gpg
+
+
+    - name: Uninstall packages
+
+      apt:
+        name: 
+            - sublime-text
+            - sublime-merge
+
+        state: absent
+
+
+    - name: test if old sublime text repository files exists
+      stat:
+        path: /etc/apt/sources.list.d/add-sublime-text.sources
+      register: stat_result
+
+    - name: delete if exists
+      file:
+        path: /etc/apt/sources.list.d/add-sublime-text.sources
+        state: absent
+      when: stat_result.stat.exists
+
+    - name: test if old sublime text gpg key exists
+      stat:
+        path: /etc/apt/keyrings/add-sublime-text.asc
+      register: stat_result
+
+    - name: delete if exists
+      file:
+        path: /etc/apt/keyrings/add-sublime-text.asc
+        state: absent
+      when: stat_result.stat.exists
+
+
+    - name: get sublime text gpg key
+      shell: wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo tee /etc/apt/keyrings/sublimehq-pub.asc > /dev/null
+
+    - name: set sublime text repo
+      shell: "printf 'Types: deb\nURIs: https://download.sublimetext.com/\nSuites: apt/stable/\nSigned-By: /etc/apt/keyrings/sublimehq-pub.asc' | sudo tee /etc/apt/sources.list.d/sublime-text.sources"
+
+    - name: Update apt repo and cache
+      apt: 
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+
+    - name: "Install sublime text and sublime merge"
+      apt:
+        name: 
+            - apt-transport-https
+            - sublime-text
+            - sublime-merge
+            

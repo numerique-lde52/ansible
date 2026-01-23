@@ -1,0 +1,43 @@
+---
+#
+# Configure a specific user's remote desktop acces
+#
+# invoque with :
+# ansible-playbook playbooks/config-remote-desktop-host.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/community/general/dconf_module.html
+#
+# Desktop changes can be observed in dconf database using "dconf watch /"
+#
+
+- name: Configure user desktop
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: test
+
+# CHANGE THIS IF NECESSARY
+#              vvvvvvvv
+  remote_user: utilisateur
+
+  tasks:
+
+    - name: set network used for and enable sharing
+      dconf:
+        key: /org/gnome/settings-daemon/plugins/sharing/vino-server/enabled-connections
+        value: "['21009db1-4fc2-4b24-aabd-7e9263e22b01']"
+  
+    - name: remove prompt
+      dconf:
+        key: /org/gnome/desktop/remote-access/prompt-enabled
+        value: "false"
+
+    - name: remove connection notification on host
+      dconf:
+        key: /org/gnome/desktop/remote-access/notify-on-connect
+        value: "false"
+
+    - name: disable auth
+      dconf:
+        key: /org/gnome/desktop/remote-access/authentication-methods
+        value: "['none']"

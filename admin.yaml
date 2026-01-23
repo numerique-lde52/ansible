@@ -1,0 +1,236 @@
+---
+# ligue52 inventory file
+#
+# ref : https://docs.ansible.com/ansible-core/2.13/getting_started/get_started_inventory.html
+#
+# this inventory works on tplink router "routeur qui marche bien bien" network ONLY !!!!
+#
+#
+# USE THIS FILE FOR SUDO TASKS ONLY !
+#
+
+#################################################
+###    ROUTEUR CRIB
+#################################################    
+hpg3:
+  hosts:
+    ligue01:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.101
+
+    ligue02:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.102
+
+    ligue03:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.103
+
+    ligue04:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.104
+
+    ligue05:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.105
+
+    # ligue06:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.106
+
+    # ligue07:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.107
+
+    # ligue08:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.108
+
+    ligue09:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.109
+
+    # ligue10:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.110
+
+    # ligue11:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.111
+
+    # ligue12:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.112
+
+    # ligue13:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.113
+
+    # ligue14:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.114
+
+    # ligue15:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.115
+
+    # ligue16:
+    #   ansible_user: ligue16
+    #   ansible_host: 192.168.1.116
+
+    # ligue17:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.117
+
+    ligue18:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.118
+
+    ligue19:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.119
+
+    # ligue20:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.120
+
+  vars:
+    ansible_become_method: sudo
+    ansible_become_password: a
+    ansible_ssh_user: utilisateur
+    target_user: utilisateur  
+    ansible_ssh_pass: a
+    ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+
+hpg32:
+  hosts:
+
+    ligue02:
+
+  vars:
+    ansible_become_method: sudo
+    ansible_become_password: a
+    ansible_ssh_user: utilisateur
+    target_user: utilisateur  
+    ansible_ssh_pass: a
+    ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+
+
+thinkpads:
+  hosts:
+
+    thinkpad03:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.203
+
+
+  vars:
+    ansible_become_method: sudo
+    ansible_become_password: a
+    ansible_ssh_user: utilisateur
+    target_user: utilisateur  
+    ansible_ssh_pass: a
+    ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+
+
+#################################################
+###    ROUTEUR QUI MARCHE BIEN
+#################################################
+
+# hpg3:
+#   hosts:
+    # ligue01:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.101
+
+    # ligue02:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.102
+
+    # ligue03:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.103
+
+    # ligue04:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.104
+
+    # ligue05:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.105
+
+    # ligue06:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.106
+
+    # ligue07:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.107
+
+    # ligue08:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.108
+
+    # ligue09:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.109
+
+    # ligue10:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.110
+
+    # ligue11:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.111
+
+    # ligue12:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.112
+
+    # ligue13:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.113
+
+    # ligue14:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.114
+
+    # ligue15:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.115
+
+    # ligue16:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.116
+
+    # ligue17:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.117
+
+    # ligue18:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.118
+
+    # ligue19:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.119
+
+    # ligue20:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.15.120
+
+    # ideapad:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.58
+
+  # vars:
+  #   ansible_become_method: sudo
+  #   ansible_become_password: toto
+  #   ansible_ssh_user: utilisateur
+  #   target_user: geek  
+  #   ansible_ssh_pass: Ligue_52!!!
+  #   ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+
+
+
+

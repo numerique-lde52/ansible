@@ -1,0 +1,40 @@
+---
+#
+# Copy standard Dconf to target
+#
+# configuration comes from a model PC
+# dconf dump / > dconf-save.txt"
+#
+# invoque with :
+# ansible-playbook playbooks/200-config-dconf.yaml
+#
+# ref : https://linuxconfig.org/introduction-to-the-dconf-configuration-system
+
+- name: Load dconf dump to PC
+  
+  hosts: hpg3
+  
+  remote_user: "{{ target_user }}"
+  
+  gather_facts: false
+
+  tasks:
+
+    - name: Copy dump
+      copy:
+        # with trailing slash copy only files recursiv
+        # eg : /home/user/files/
+        # without trailing slash, will copy folder and his content
+        # eg : /home/user/files
+
+        src: "~/.ansible/files/install/dconf-save.txt"
+        dest: "~/Téléchargements/"
+
+    - name: Load dconf
+      shell:
+        cmd: dconf load / < ~/Téléchargements/dconf-save.txt
+
+    - name: remove dump
+      file:
+        path: "~/Téléchargements/dconf-save.txt"
+        state: absent        

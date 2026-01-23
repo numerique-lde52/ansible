@@ -1,0 +1,12 @@
+L'extension « Formula (pdflatex) » n'a pas été chargée, car une dépendance est manquante.
+Dépendance:
+	type: executable
+	emplacement: chemin
+	chaîne: pdflatex
+
+L'extension « Optimized PNG » n'a pas été chargée, car une dépendance est manquante.
+Dépendance:
+	type: executable
+	emplacement: chemin
+	chaîne: optipng
+

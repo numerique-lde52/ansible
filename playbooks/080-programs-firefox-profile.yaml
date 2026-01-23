@@ -1,0 +1,31 @@
+---
+#
+# Copy Firefox profile to remote pc
+#
+# Targeting snap firefox
+#
+# invoque with :
+# ansible-playbook playbooks/080-programs-firefox-profile.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+- name: Copy Firefox profile to remote pc
+  
+  hosts: hpg3
+  
+  remote_user: "{{ target_user }}"
+  
+  gather_facts: false
+
+  tasks:
+
+    - name: Recursively remove old profile
+      file:
+        path: "~/snap/firefox"
+        state: absent
+    
+    - name: Extract firefox profile into ~/snap
+      unarchive:
+        src: "~/.ansible/files/install/firefox.zip"
+      #  src: "~/.ansible/files/install/firefox.tar.gz"
+        dest: "~/snap/"

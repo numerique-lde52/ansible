@@ -1,0 +1,40 @@
+---
+#
+# Configure a specific user's wallpaper
+#
+# invoque with :
+# ansible-playbook playbooks/thinkpads/095-copy-documents.yaml
+#
+# Desktop changes can be observed in dconf database using "dconf watch /"
+#
+
+- name: Copy documents
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: thinkpads
+
+# CHANGE THIS IF NECESSARY
+  remote_user: "{{ target_user }}"
+
+  tasks:
+
+    - name: Copy printers install documentation
+      copy:
+        # with trailing slash copy only files recursiv
+        src: "~/.ansible/files/install/Installations imprimantes réseau Ligue 52.pdf"
+        dest: ~/Téléchargements/
+
+
+    - name: Copy Ricoh ppd file
+      copy:
+        # with trailing slash copy only files recursiv
+        src: "~/.ansible/files/install/Ricoh-MP_C3003-PDF-Ricoh-CUSTOM.ppd"
+        dest: ~/Téléchargements/
+ 
+
+    - name: Copy Konica install files
+      copy:
+        # with trailing slash copy only files recursiv
+        src: "~/.ansible/files/install/KMbeuUXv1_25_custom_ligue52/"
+        dest: ~/Téléchargements/KMbeuUXv1_25_custom_ligue52/

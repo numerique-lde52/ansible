@@ -1,0 +1,9 @@
+# File: sources.list
+
+deb https://mirrors.univ-reims.fr/mint gigi main upstream import backport 
+
+deb http://miroir.univ-lorraine.fr/debian trixie main contrib non-free non-free-firmware
+deb http://miroir.univ-lorraine.fr/debian trixie-updates main contrib non-free non-free-firmware
+deb http://security.debian.org/ trixie-security main contrib non-free non-free-firmware
+
+deb http://miroir.univ-lorraine.fr/debian trixie-backports main contrib non-free non-free-firmware

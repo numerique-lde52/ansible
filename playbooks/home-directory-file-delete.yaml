@@ -1,0 +1,26 @@
+---
+#
+# Deletion of files and folders
+#
+# invoque with :
+# ansible-playbook playbooks/home-directory-file-delete.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+- name: Deletion of files and folders
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: stage
+
+# CHANGE THIS IF NECESSARY
+#              vvvvvvvv  
+  remote_user: utilisateur
+
+  tasks:
+
+    - name: delete files
+      file: 
+        path: ~/Bureau/google.html
+        state: absent
+ 

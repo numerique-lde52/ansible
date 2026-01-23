@@ -1,0 +1,92 @@
+---
+#
+# Install veyon 
+# with deb archive from veyon repository
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/045-programs_veyon-LMDE.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+
+- name: Install veyon
+  
+  hosts: hpg3
+  
+  become: yes
+
+  vars:
+    target_file_path: "/home/{{ target_user }}/Téléchargements/"
+
+  tasks:
+
+    - name: Uninstall previous versions
+      apt:
+        name: veyon
+        state: absent
+
+    - name: check latest veyon
+      uri:
+        url: https://api.github.com/repos/veyon/veyon/releases/latest
+        return_content: true
+
+      register: veyon_latest
+
+    - name: "Getting veyon {{ veyon_latest.json.tag_name }} infos"
+      loop: "{{ veyon_latest.json.assets }}"
+      when: "'debian.13_amd64' in item.name"
+      set_fact:
+        veyon_latest_deb_local_path: "{{target_file_path + item.name }}"
+        veyon_latest_deb_url: "{{ item.browser_download_url }}"
+
+    - name: "print file local path"
+      debug:
+        var: veyon_latest_deb_local_path
+
+    - name: "print file url"
+      debug:
+        var: veyon_latest_deb_url
+
+    - name : "Download deb"
+      get_url:
+        url: "{{ veyon_latest_deb_url }}"
+        dest: "{{ target_file_path }}"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+      
+    - name: Install veyon .deb package
+      apt:
+        deb: "{{ veyon_latest_deb_local_path }}"
+        state: present
+
+    - name: remove deb archive
+      file:
+        path: "{{ veyon_latest_deb_local_path }}"
+        state: absent
+
+    - name: Recursively remove old veyon config
+      file:
+        path: "/etc/xdg/Veyon Solutions/Veyon.conf"
+        state: absent
+  
+    - name: Copy veyon config
+      copy:
+        src: "~/.ansible/files/config_veyon/Veyon.conf"
+        dest: "/etc/xdg/Veyon Solutions/"
+
+    - name: Recursively remove old veyon keys
+      file:
+        path: "/etc/veyon/keys/public"
+        state: absent
+    
+    - name: Copy veyon keys
+      copy:
+        src: "~/.ansible/files/config_veyon/keys/public/hp-G3/key"
+        dest: "/etc/veyon/keys/public/hp-G3/"
+
+
+    - name: Register veyon service
+      ansible.builtin.command: systemctl enable veyon
+
+    - name: Start veyon service
+      ansible.builtin.command: systemctl start veyon

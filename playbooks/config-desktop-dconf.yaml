@@ -1,0 +1,111 @@
+---
+#
+# Configure a specific user's desktop
+#
+# invoque with :
+
+# pour l'admin
+# ansible-playbook -i admin.yaml playbooks/config-desktop-dconf.yaml
+
+# pour un utilisateur normal
+# ansible-playbook playbooks/config-desktop-dconf.yaml
+
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/community/general/dconf_module.html
+#
+# Desktop changes can be observed in dconf database using "dconf watch /"
+#
+
+- name: Configure user desktop
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+# CHANGE THIS IF NECESSARY
+#              vvvvvvvv
+
+# pour l'admin ex : liguexx
+#  remote_user: "{{ ansible_user }}"
+
+# pour un utilisateur normal
+  remote_user: geek
+
+  tasks:
+
+    - debug:
+        msg: "ansible_user = {{ ansible_user }}"
+
+    - debug: msg="ansible_user_id = {{ ansible_user_id }}"
+
+    # - name: First run welcome message
+    #   dconf:
+    #     key: /apps/update-manager/first-run
+    #     value: "false"
+    #     state: present
+
+    - name: set icons/applications
+      dconf:
+        key: /org/gnome/shell/favorite-apps
+        value: "['org.gnome.Nautilus.desktop', 'firefox_firefox.desktop', 'org.mobsya.ThymioSuite.desktop']"
+        state: present
+
+    # - name: allow crash reports
+    #   dconf:
+    #     key: /org/gnome/desktop/privacy/report-technical-problems
+    #     value: "true"
+
+    - name: avoid suspend
+      dconf:
+        key: /org/gnome/desktop/screensaver/lock-enabled
+        value: "false"
+
+    - name: avoid lock on suspend
+      dconf:
+        key: /org/gnome/desktop/screensaver/ubuntu-lock-on-suspend
+        value: "false"
+
+    - name: remove home icon on desktop
+      dconf:
+        key: /org/gnome/shell/extensions/desktop-icons/show-home
+        value: "false"
+
+    - name: remove trash icon on desktop
+      dconf:
+        key: /org/gnome/shell/extensions/desktop-icons/show-trash
+        value: "false"
+
+    - name: resize favorites icons
+      dconf:
+        key: /org/gnome/shell/extensions/dash-to-dock/dash-max-icon-size
+        value: 24
+
+    - name: allow nautilus tree view
+      dconf:
+        key: /org/gnome/nautilus/list-view/use-tree-view
+        value: "true"
+
+#    - name: cursor size
+#      dconf:
+#        key: /org/gnome/desktop/interface/cursor-size
+#        value: 48
+
+#    - name: show universal access
+#      dconf:
+#        key: /org/gnome/a11y/always-show-universal-access-status
+#        value: "true"
+
+#    - name: double click speed
+#      dconf:
+#        key: /org/gnome/settings-daemon/peripherals/mouse/double-click
+#        value: 630
+
+#    - name: read mouse speed
+#      dconf:
+#        key: /org/gnome/desktop/peripherals/mouse/speed
+#        state: read
+
+#    - name: set mouse speed
+#      dconf:
+#        key: /org/gnome/desktop/peripherals/mouse/speed
+#        value: -1.0

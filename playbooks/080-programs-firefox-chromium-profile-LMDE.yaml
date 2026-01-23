@@ -1,0 +1,42 @@
+---
+#
+# Copy Firefox and chromium profiles to remote pc
+#
+# invoque with :
+# ansible-playbook playbooks/080-programs-firefox-chromium-profile-LMDE.yaml
+#
+# ref : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html
+
+- name: Copy Firefox profile to remote pc
+  
+  hosts: hpg3
+  
+  remote_user: "{{ target_user }}"
+  
+  gather_facts: false
+
+  tasks:
+
+    - name: Recursively remove old profile
+      file:
+        path: "~/.mozilla"
+        state: absent
+    
+    - name: Extract firefox profile user's home
+      unarchive:
+        src: "~/.ansible/files/install/mint-lmde7/.mozilla.tar.gz"
+      #  src: "~/.ansible/files/install/firefox.tar.gz"
+        dest: "~/"
+
+
+
+    - name: Recursively remove old profile
+      file:
+        path: "~/.config/chromium"
+        state: absent
+    
+    - name: Extract firefox profile into user's home .config
+      unarchive:
+        src: "~/.ansible/files/install/mint-lmde7/chromium.tar.gz"
+      #  src: "~/.ansible/files/install/firefox.tar.gz"
+        dest: "~/.config/"

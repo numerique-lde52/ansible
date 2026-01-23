@@ -1,0 +1,19 @@
+---
+#
+# Shutdown
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/shutdown.yaml
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+- hosts: hpg3
+
+  become: yes
+
+  become_method: sudo
+
+  tasks:
+  - name: shutdown hosts
+    command: sudo /sbin/shutdown -h now
+  

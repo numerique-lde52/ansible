@@ -1,0 +1,65 @@
+---
+#
+# Test files upload after cleaning
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/test-delete-and-upload-files.yaml
+#
+
+- name: Test files upload after cleaning
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: yes
+
+  tasks:
+
+    - name: get current user's home path
+      shell: pwd
+      register: base_path
+
+    - debug: msg="{{ base_path.stdout }}"
+
+    - name: remove a file
+      file:
+        path: "{{ base_path.stdout }}/.config/inkscape/"
+        state: absent
+    
+    - name: Get stats of the FS object
+      ansible.builtin.stat:
+        path: "{{ base_path.stdout }}/.config/inkscape"
+      register: pp
+    - name: Print a debug message
+      ansible.builtin.debug:
+        msg: "Path exists and is a directory"
+      when: pp.stat.isdir is defined and pp.stat.isdir
+
+    - debug: msg="{{ pp }}"
+
+
+    - name: Copy inkscape config
+      copy:
+        # with trailing slash copy only files recursiv
+        # eg : /home/user/files/
+        # without trailing slash, will copy folder and his content
+        # eg : /home/user/files
+
+        src: "~/.ansible/files/config_inkscape/inkscape"
+        dest: "{{ base_path.stdout }}/.config/"
+        owner: "{{ target_user }}"
+        group: "{{ target_user }}"
+        mode: u=rwx,g=rx,o=rx
+
+
+    - name: Get stats of the FS object
+      ansible.builtin.stat:
+        path: "{{ base_path.stdout }}/.config/inkscape"
+      register: p
+    - name: Print a debug message
+      ansible.builtin.debug:
+        msg: "Path exists and is a directory"
+      when: p.stat.isdir is defined and p.stat.isdir
+
+    - debug: msg="{{ p }}"

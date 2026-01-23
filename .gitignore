@@ -1,0 +1,9 @@
+# Specify filepatterns you want git to ignore.
+
+
+files/geeks
+
+
+galaxy_cache/
+log/
+tmp/

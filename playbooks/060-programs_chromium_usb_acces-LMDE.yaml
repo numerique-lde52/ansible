@@ -1,0 +1,36 @@
+---
+#
+# Allow usb acces to chromium
+# used for microbit connection
+#
+##################################################################
+#
+#       NOT FUNCTIONNAL
+#         CANNOT CONNECT TO MICROBIT IN ORDER TO USE FAST UPLOAD
+#
+###################################################################
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/060-programs_chromium_usb_acces-LMDE.yaml
+#
+#
+# source : https://docs.ansible.com/ansible/latest/collections/community/general/snap_module.html
+
+- name: Allow usb acces to chromium used for microbit connection
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg32
+
+  become: true
+
+  tasks:
+
+    - name: Set rights on USB for Microbit
+      copy:
+        dest: "/etc/udev/rules.d/50-microbit.rules"
+        content: |
+          SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", MODE="0664", GROUP="plugdev"
+
+    - name: reload rules
+      command: sudo udevadm control --reload-rules

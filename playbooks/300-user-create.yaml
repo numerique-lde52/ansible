@@ -1,0 +1,68 @@
+---
+# refs :
+# https://citizix.com/how-to-create-a-linux-user-using-ansible/
+#
+# Create user
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/300-user-create.yaml
+
+- name: Create a login user and add ssh pubkey to it
+
+  # CHANGE THIS IF NECESSARY
+  #           vvvvvvvv
+  vars:
+    new_username: invite
+    new_userpwd: a
+
+  # CHANGE THIS IF NECESSARY
+  #        vvvvvvvv
+  hosts: hpg3
+
+  debugger: on_failed
+  
+  become: yes
+
+  gather_facts: false
+
+  tasks:
+
+    - name: create user
+      user:
+        name: '{{ new_username }}'
+        password: "{{ new_userpwd | password_hash('sha512') }}"
+
+        shell: /bin/bash
+        home: "/home/{{ new_username }}"
+        append: yes
+        groups:
+          - users
+
+        state: present
+
+    # - name: Add user to sudo group
+    #   user:
+    #     name: {{ new_username }}
+    #     groups: sudo
+    #     append: yes
+
+
+    - name: Add public key to authorized_keys
+      authorized_key:
+        user: "{{ new_username }}"
+        state: present
+        key: "{{ lookup('file', '~/.ssh/rsa_ansible_ligue.pub') }}"
+
+    - name: Create .config directory
+      file:
+        path: /home/{{ new_username }}/.config/
+        state: directory
+        mode: '0755'
+        owner: '{{ new_username }}'
+        group: '{{ new_username }}'
+        
+    - name: create intial setup done file
+      copy:
+        dest: "/home/{{ new_username }}/.config/gnome-initial-setup-done"
+        content: |
+          yes

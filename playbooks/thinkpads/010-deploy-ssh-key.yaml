@@ -1,0 +1,28 @@
+---
+#
+# Deploy ssh key for specific user
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/thinkpads/010-deploy-ssh-key.yaml
+#
+- name: Deploy ssh key to managed hosts
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: thinkpads
+
+  become: yes
+
+  tasks:
+    - name: Deploy public key to remote
+      authorized_key:
+        user: "{{ target_user }}"
+        key: "{{ lookup('file', lookup('env','HOME') + ansible_ssh_public_key_file ) }}"
+        state: present
+
+    - name: Disable SSH password authentication
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?\s*PasswordAuthentication\s'
+        line: 'PasswordAuthentication no'
+        state: present

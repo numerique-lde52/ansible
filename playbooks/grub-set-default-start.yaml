@@ -1,0 +1,34 @@
+---
+#
+# Change Grub defaut start
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/grub-set-default-start.yaml
+#
+- name: Change Grub default
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: win
+
+  become: yes
+
+  tasks:
+
+    # - name: Change GRUB config to start on Windaube
+    #   lineinfile:
+    #     dest: /etc/default/grub
+    #     regexp: ^GRUB_DEFAULT=0
+    #     line: GRUB_DEFAULT=2
+    #     state: present
+
+    - name: Change GRUB config to start on Linux
+      lineinfile:
+        dest: /etc/default/grub
+        regexp: ^GRUB_DEFAULT=2
+        line: GRUB_DEFAULT=0
+        state: present
+
+
+    - name: reload grub
+      command: sudo update-grub

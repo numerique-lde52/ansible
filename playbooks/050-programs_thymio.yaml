@@ -1,0 +1,52 @@
+---
+#
+# Install thymio suite
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/050-programs_thymio.yaml
+#
+#
+# source : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+- name: Install thymio suite
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: true
+
+  tasks:
+    - name: Install flatpack
+      apt:
+        name: 
+            - flatpak
+            - gnome-software-plugin-flatpak
+
+        state: present
+
+    - name: Add the flathub flatpak repository remote to the user installation
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    
+    - name: Set rights on USB for Thymio ide
+      copy:
+        dest: "/etc/udev/rules.d/99-mobsya.rules"
+        content: |
+          SUBSYSTEM=="usb", ATTRS{idVendor}=="0617", ATTRS{idProduct}=="000a", MODE="0666"
+          SUBSYSTEM=="usb", ATTRS{idVendor}=="0617", ATTRS{idProduct}=="000c", MODE="0666"
+
+    - name: reload rules
+      command: sudo udevadm control --reload-rules
+
+    - name: Install thymio flatpak
+      community.general.flatpak:
+        name:  https://flathub.org/repo/appstream/org.mobsya.ThymioSuite.flatpakref
+        state: present
+        method: system
+
+##########################################################""
+#      LAUNCHER DOES NOT APPEAR AFTER INSTALL
+#      NEED quit and reload session or REBOOT

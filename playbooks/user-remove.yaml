@@ -1,0 +1,29 @@
+---
+# refs :
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+#
+# Remove user
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/user-remove.yaml
+
+- name: Delete user and user files
+
+  # a host list from hosts.yaml
+  hosts: hpg3
+
+  # debugger: on_failed
+  
+  become: yes
+
+  gather_facts: false
+
+  vars:
+    user: invite
+
+  tasks:
+    - name: "Remove user {{ user }} and his home dir"
+      ansible.builtin.user:
+        name: "{{ user }}"
+        state: absent
+        remove: yes

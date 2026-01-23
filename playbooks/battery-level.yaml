@@ -1,0 +1,38 @@
+---
+#
+# Read battery level
+#
+# invoque with :
+# ansible-playbook playbooks/battery-level.yaml
+#
+- name: Get battery levels
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+  
+  remote_user: utilisateur
+
+  tasks:
+
+    - debug: msg="ansible_user_id = {{ ansible_user_id }}"
+
+    - name: print to stdout
+      shell: grep POWER_SUPPLY_CAPACITY /sys/class/power_supply/BAT0/uevent
+      register: power
+
+    - debug: msg="{{ power.stdout }}"
+
+    # - debug: msg="OS Version {{ansible_distribution_version}}"
+
+    - name: List files and folder in home directory
+      shell: 'ls -l /home'
+      register: command_output
+
+    - debug: msg="{{ command_output.stdout_lines }}"
+       
+    # - name: Check if files are copied
+    #   shell: 'ls -l ~/Documents/'
+    #   register: command_output
+
+    # - debug: msg="{{ command_output.stdout_lines }}"

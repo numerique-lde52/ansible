@@ -1,0 +1,10 @@
+---
+#
+# Make a system snapshot
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/400-system-snapshot.yaml
+#
+# 
+
+- name: Make a system snapshot

@@ -1,0 +1,21 @@
+---
+#
+# Upgrade all snap
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/upgrade-snap.yaml
+#
+
+
+- name: Upgrade all snap
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: hpg3
+
+  become: yes
+
+  tasks:
+
+    - name: Update all snap packages
+      command: snap refresh

@@ -1,0 +1,35 @@
+---
+#
+# Deploy ssh key for specific user
+#
+# invoque with :
+# ansible-playbook -i playbooks/pc-labo/inventory-admin.yaml playbooks/pc-labo/100-install-apache.yaml
+#
+- name: Install apache2 and modules
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: pc_labo
+
+  become: yes
+
+  tasks:
+
+    - name: Install apache2
+      apt:
+        name: apache2
+        update_cache: yes
+        state: present
+
+    - name: enable mod_rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+      notify:
+        - restart apache2
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted            

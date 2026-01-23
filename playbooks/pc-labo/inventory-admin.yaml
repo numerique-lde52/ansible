@@ -1,0 +1,27 @@
+---
+# pc-labo inventory file
+#
+# ref : https://docs.ansible.com/ansible-core/2.13/getting_started/get_started_inventory.html
+#
+
+pc_labo:
+  hosts:
+    # pc-labo:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.129
+
+    ligue16:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.116
+
+  vars:
+    ansible_become_method: sudo
+    ansible_become_password: a
+    ansible_ssh_user: utilisateur
+    target_user: utilisateur  
+    ansible_ssh_pass: a
+    ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+
+
+
+

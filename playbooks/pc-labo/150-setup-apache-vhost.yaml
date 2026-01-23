@@ -1,0 +1,72 @@
+---
+#
+# Setup an apache vhost
+#
+# invoque with :
+# ansible-playbook -i playbooks/pc-labo/inventory-admin.yaml playbooks/pc-labo/150-setup-apache-vhost.yaml
+#
+- name: Setup an apache vhost
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: pc_labo
+
+  become: true
+
+  vars:
+    website: "mywebsite.local"
+    add_www: false
+    disable_default_site: true
+    vhost_template: "virtual-host-apache-config-file.j2"
+
+  tasks:
+    - debug: msg="website = {{ website }}"
+    - debug: msg="template = {{ vhost_template }}"
+    - debug: msg="add_www = {{ add_www }}"
+    - debug: msg="disable_default_site = {{ disable_default_site }}"
+
+    - name: create folder for {{ website }} files
+      file: 
+        path: /var/www/{{ website }} 
+        state: directory 
+        owner: "{{ target_user }}" 
+        group: "{{ target_user }}" 
+        mode: 0755
+
+    - name: Copy virtual-host config file for {{ website }}
+      template: 
+        src: "{{ vhost_template }}" 
+        dest: "/etc/apache2/sites-available/{{ website }}.conf"
+
+    - name: Enable virtual host - {{ website }}
+      command: a2ensite {{ website }}.conf
+      notify:
+        - restart apache2
+
+    - name: Disable default site
+      shell: a2dissite 000-default.conf
+      when: disable_default_site
+      notify:
+        - restart apache2  
+
+    - name: phpinfo
+      copy: 
+        src: "files/apache/p.php"
+        dest: "/var/www/{{ website }}" 
+        owner: "{{ target_user }}" 
+        group: "{{ target_user }}" 
+        mode: 0644
+
+    - name: Add an entry to /etc/hosts
+      lineinfile: 
+        dest: "/etc/hosts"
+        line: "127.0.0.1 {{ website }}"
+        state: present
+
+    - debug: msg="Restart your browser to reload hosts configuration"
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted 

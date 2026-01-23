@@ -1,0 +1,49 @@
+---
+#
+# Remove an apache vhost
+#
+# invoque with :
+# ansible-playbook -i playbooks/pc-labo/inventory-admin.yaml playbooks/pc-labo/200-remove-apache-vhost.yaml
+#
+- name: Remove an apache vhost
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: pc_labo
+
+  become: true
+
+  vars:
+    website: "mywebsite.local"
+
+  tasks:
+    - debug: msg="website = {{ website }}"
+
+    - name: Disable {{ website }}
+      shell: a2dissite {{ website }}.conf
+      notify:
+        - restart apache2  
+
+    - name: Remove virtual-host config file for {{ website }}
+      file: 
+        path: "/etc/apache2/sites-available/{{ website }}.conf"
+        state: absent 
+
+    - name: remove folder for {{ website }} files
+      file: 
+        path: /var/www/{{ website }} 
+        state: absent 
+
+    - name: Remove entry from /etc/hosts
+      lineinfile: 
+        dest: "/etc/hosts"
+        line: "127.0.0.1 {{ website }}"
+        state: absent
+
+    - debug: msg="Restart your browser to reload hosts configuration"
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted 

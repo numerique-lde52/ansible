@@ -1,0 +1,71 @@
+---
+#
+# Update, Upgrade and reboot if necessary
+#
+# invoque with :
+# ansible-playbook -i playbooks/pc-labo/inventory-admin.yaml playbooks/pc-labo/020-upgrade.yaml
+#
+#
+# source : https://www.cyberciti.biz/faq/ansible-apt-update-all-packages-on-ubuntu-debian-linux/
+
+- name: Upgrade packages
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: pc_labo
+  
+  become: yes
+
+  tasks:
+
+    # Following : [DEPRECATION WARNING]: Encryption using the Python crypt module is deprecated. 
+    #             The Python crypt module is deprecated and will be removed from Python 3.13. 
+    #             Install the passlib library for continued encryption functionality. This feature will be removed in version 2.17. 
+    # Check if the new passlib is present. If not, install it.
+    # 
+    - name : python3-passlib install ok ?
+      apt: 
+        pkg: python3-passlib
+        state: present
+
+    # 
+    - name: checking BIOS version
+      shell: 'dmidecode -s bios-version'
+      register: command_output
+
+    - debug: msg="checking BIOS version {{ command_output.stdout_lines }}"
+
+
+    - name: Update apt repo and cache on all Debian/Ubuntu boxes
+      apt: 
+        update_cache: yes
+        force_apt_get: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+        force_apt_get: yes
+        lock_timeout: 60
+
+    - name: Update all snap packages
+      command: snap refresh
+      
+    - name: Remove dependencies that are no longer required
+      apt:
+        autoremove: yes
+        purge: true        
+
+    - name: Check if a reboot is needed on all servers
+      register: reboot_required_file
+      stat: path=/var/run/reboot-required
+
+    - name: Reboot the box if kernel updated
+      reboot:
+        msg: "Reboot initiated by Ansible for kernel updates"
+        connect_timeout: 5
+        reboot_timeout: 300
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: uptime
+      when: reboot_required_file.stat.exists

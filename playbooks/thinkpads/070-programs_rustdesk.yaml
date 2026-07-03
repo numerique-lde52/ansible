@@ -7,7 +7,6 @@
 #
 # 
 
-
 - name: Install ruskdesk
   
   hosts: thinkpads
@@ -15,7 +14,7 @@
   become: yes
 
   vars:
-    target_file_path: "/home/{{ target_user }}/Téléchargements/"
+    target_file_path: "/home/{{ target_user }}/Downloads/"
 
   tasks:
 

@@ -10,89 +10,90 @@
 #
 
 #################################################
-###    ROUTEUR CRIB
+###    ROUTEUR CRIB 192.168.1.xxx
+###    ROUTEUR Tplink 045e  192.168.3.xxx
 #################################################    
 hpg3:
   hosts:
     ligue01:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.101
+      ansible_host: 192.168.3.101
 
-    ligue02:
-      ansible_user: utilisateur
-      ansible_host: 192.168.1.102
+    # ligue02:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.3.102
 
     ligue03:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.103
+      ansible_host: 192.168.3.103
 
-    ligue04:
-      ansible_user: utilisateur
-      ansible_host: 192.168.1.104
+    # ligue04:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.3.104
 
     ligue05:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.105
+      ansible_host: 192.168.3.105
 
     # ligue06:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.106
+    #   ansible_host: 192.168.3.106
 
     # ligue07:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.107
+    #   ansible_host: 192.168.3.107
 
     # ligue08:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.108
+    #   ansible_host: 192.168.3.108
 
     ligue09:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.109
+      ansible_host: 192.168.3.109
 
     # ligue10:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.110
+    #   ansible_host: 192.168.3.110
 
     # ligue11:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.111
+    #   ansible_host: 192.168.3.111
 
     # ligue12:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.112
+    #   ansible_host: 192.168.3.112
 
     # ligue13:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.113
+    #   ansible_host: 192.168.3.113
 
     # ligue14:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.114
+    #   ansible_host: 192.168.3.114
 
     # ligue15:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.115
+    #   ansible_host: 192.168.3.115
 
     # ligue16:
     #   ansible_user: ligue16
-    #   ansible_host: 192.168.1.116
+    #   ansible_host: 192.168.3.116
 
     # ligue17:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.117
+    #   ansible_host: 192.168.3.117
 
     ligue18:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.118
+      ansible_host: 192.168.3.118
 
     ligue19:
       ansible_user: utilisateur
-      ansible_host: 192.168.1.119
+      ansible_host: 192.168.3.119
 
     # ligue20:
     #   ansible_user: utilisateur
-    #   ansible_host: 192.168.1.120
+    #   ansible_host: 192.168.3.120
 
   vars:
     ansible_become_method: sudo
@@ -105,13 +106,15 @@ hpg3:
 hpg32:
   hosts:
 
-    ligue02:
+    ligue11:
+      ansible_user: utilisateur
+      ansible_host: 192.168.1.111
 
   vars:
     ansible_become_method: sudo
     ansible_become_password: a
-    ansible_ssh_user: utilisateur
-    target_user: utilisateur  
+    ansible_ssh_user: test
+    target_user: test
     ansible_ssh_pass: a
     ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
 
@@ -119,16 +122,19 @@ hpg32:
 thinkpads:
   hosts:
 
-    thinkpad03:
-      ansible_user: utilisateur
-      ansible_host: 192.168.1.203
+    # thinkpad03:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.11
 
+    t420:
+      ansible_user: daja
+      ansible_host: 192.168.15.103
 
   vars:
     ansible_become_method: sudo
     ansible_become_password: a
-    ansible_ssh_user: utilisateur
-    target_user: utilisateur  
+    ansible_ssh_user: daja
+    target_user: daja
     ansible_ssh_pass: a
     ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
 

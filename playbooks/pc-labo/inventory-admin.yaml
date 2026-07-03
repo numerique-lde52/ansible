@@ -10,9 +10,13 @@ pc_labo:
     #   ansible_user: utilisateur
     #   ansible_host: 192.168.1.129
 
-    ligue16:
-      ansible_user: utilisateur
-      ansible_host: 192.168.1.116
+    # ligue11:
+    #   ansible_user: utilisateur
+    #   ansible_host: 192.168.1.111
+
+    P52s:
+       ansible_user: utilisateur
+       ansible_host: 192.168.15.130
 
   vars:
     ansible_become_method: sudo
@@ -20,7 +24,8 @@ pc_labo:
     ansible_ssh_user: utilisateur
     target_user: utilisateur  
     ansible_ssh_pass: a
-    ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+    # ansible_ssh_public_key_file: /.ssh/rsa_ansible_ligue.pub
+    ansible_ssh_public_key_file: /.ssh/regardons.pub
 
 
 

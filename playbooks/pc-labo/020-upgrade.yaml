@@ -47,9 +47,6 @@
         upgrade: dist
         force_apt_get: yes
         lock_timeout: 60
-
-    - name: Update all snap packages
-      command: snap refresh
       
     - name: Remove dependencies that are no longer required
       apt:

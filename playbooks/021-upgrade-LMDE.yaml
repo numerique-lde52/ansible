@@ -35,22 +35,22 @@
 
     - debug: msg="checking BIOS version {{ command_output.stdout_lines }}"
 
-    - name: set update mirrors for debian
-      block:
+    # - name: set update mirrors for debian
+    #   block:
 
-        - name: replace apt mirror on debian
-          become: true
-          template:
-            src: ~/.ansible/files/install/mint-lmde7/sources.list
-            dest: /etc/apt/sources.list.d/official-package-repositories.list
-            backup: yes
-          register: replace_debian_apt_config
+    #     - name: replace apt mirror on debian
+    #       become: true
+    #       template:
+    #         src: ~/.ansible/files/install/mint-lmde7/sources.list
+    #         dest: /etc/apt/sources.list.d/official-package-repositories.list
+    #         backup: yes
+    #       register: replace_debian_apt_config
 
-        - name: update apt cache on debian
-          become: true
-          apt:
-            update_cache: yes
-          when: replace_debian_apt_config.changed
+    #     - name: update apt cache on debian
+    #       become: true
+    #       apt:
+    #         update_cache: yes
+    #       when: replace_debian_apt_config.changed
 
     - name: Update apt repo and cache on all Debian/Ubuntu boxes
       apt: 

@@ -25,11 +25,11 @@
 
     # - debug: msg="OS Version {{ansible_distribution_version}}"
 
-    - name: List files and folder in home directory
-      shell: 'ls -l /home'
-      register: command_output
+    # - name: List files and folder in home directory
+    #   shell: 'ls -l /home'
+    #   register: command_output
 
-    - debug: msg="{{ command_output.stdout_lines }}"
+    # - debug: msg="{{ command_output.stdout_lines }}"
        
     # - name: Check if files are copied
     #   shell: 'ls -l ~/Documents/'

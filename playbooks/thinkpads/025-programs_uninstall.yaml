@@ -1,0 +1,25 @@
+---
+#
+# Install somes programs
+#
+# invoque with :
+# ansible-playbook -i admin.yaml playbooks/thinkpads/025-programs_uninstall.yaml
+#
+# source : https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+
+- name: UNinstall packages
+
+# CHANGE THIS IF NECESSARY
+#        vvvvvvvv
+  hosts: thinkpads
+
+  become: yes
+
+  tasks:
+    - name: UNiInstall packages
+
+      apt:
+        name:
+            - thunderbird
+
+        state: absent

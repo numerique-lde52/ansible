@@ -16,49 +16,85 @@
   become: yes
 
   tasks:
-    - name: Install packages
+    - name: Install utils packages
 
       apt:
-        name: 
-            - audacity # montage audio
+        name:
             - backintime-qt # sauvegarde
-#            - blender # montage video
-            - chromium-browser
-            - curl 
+            - btop # moniteur système
+            - chromium # web browser
             - dconf-editor # GUI for GNOME desktop environment configuration
-            - gimp # retouche d'image
-#            - git-gui # with git
-            - gnome-software-plugin-flatpak # bibliothèque logicielle Gnome
+            - dupeguru # file duplicates search
+            - gnome-logs # lecteur journaux système
             - gnome-tweaks # configuration gnome
-            - inkscape # dessin vectoriel
             - hyphen-fr # disctionnaire français
             - hunspell-fr # disctionnaire français
-            - libreoffice
-            - libreoffice-l10n-fr
-#            - meld # comparateur de fichiers / dossiers
-#            - obs-studio # montage / regie video
-#            - openshot-qt # montage video
-            - python3-psutil # needed to manage dconf remotelly
-            - python3-passlib # new crypto lib
-            - scribus # pao
+            - mint-meta-codecs # codecs additionnels
             - synaptic # gestionnaire de paquets
-            - system-config-printer # configuration imprimantes supplémentaire
-#            - timeshift # snapshot system
-            - vlc
-#            - winff # transcodeur vidéo
 
         state: present
 
-    - name: prepare eula for ttf-mscorefonts-installer in ubuntu-restricted-extras
-      debconf:
-        name: ttf-mscorefonts-installer
-        question: msttcorefonts/accepted-mscorefonts-eula
-        vtype: boolean
-        value: true
+    - name: Install dev packages
 
-    - name: Install ubuntu-restricted-extras
       apt:
         name:
-          - ubuntu-restricted-extras # packages utilitaires
-        
+            - filezilla # ftp client
+            - git-gui # gui for git that installs git
+            - meld # comparateur de fichiers / dossiers
+            - python3-psutil # needed to manage dconf remotelly with ansible
+            - python3-passlib # new crypto lib
+            - sublime-merge # git GUI connected to sublime text
+            - sublime-text # text editor
+
+        state: present
+
+    - name: Install graphic packages
+
+      apt:
+        name:
+            - gimp # retouche d'image
+            - inkscape # dessin vectoriel
+            - krita # retouche d'image
+            - scribus # pao
+
+        state: present
+
+    - name: Install audio packages
+
+      apt:
+        name:
+            - audacity # montage audio
+
+        state: present
+
+    - name: Install video packages
+
+      apt:
+        name:
+            - blender # montage video
+            - obs-studio # montage / regie video
+            - openshot-qt # montage video
+            - vlc # lecteur multimedia
+            - winff # transcodeur vidéo
+
+        state: present
+
+
+    # interactive installation can be reproduced by ansible with debconf module
+    # https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/debconf_module.html
+    # to see which questions are asked during install use ‘sudo debconf-show <package>’
+    - name: prepare interactive answer for iperf3 wich is a hardinfo2 dependency
+      debconf:
+        name: iperf3
+        question: iperf3/start_daemon
+        vtype: boolean
+        value: false
+
+
+    - name: Install hardinfo2
+
+      apt:
+        name:
+            - hardinfo2
+
         state: present

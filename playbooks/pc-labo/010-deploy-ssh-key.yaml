@@ -20,9 +20,9 @@
         key: "{{ lookup('file', lookup('env','HOME') + ansible_ssh_public_key_file ) }}"
         state: present
 
-    # - name: Disable SSH password authentication
-    #   lineinfile:
-    #     dest: /etc/ssh/sshd_config
-    #     regexp: '^#?\s*PasswordAuthentication\s'
-    #     line: 'PasswordAuthentication no'
-    #     state: present
+    - name: Disable SSH password authentication
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: '^#?\s*PasswordAuthentication\s'
+        line: 'PasswordAuthentication no'
+        state: present
